@@ -1,5 +1,6 @@
-package producers;
+package ecommerce.producers;
 
+import ecommerce.GlobalConstants;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -14,7 +15,7 @@ public class NewOrderProducer {
         var producer = new KafkaProducer<String, String>(properties());
         var value = "123,678,987654";
         var key = "123";
-        var record = new ProducerRecord<>("ecommerce_new_order", key, value);
+        var record = new ProducerRecord<>(GlobalConstants.TOPIC_NAME, key, value);
        producer.send(record, ((data, ex) -> {
             if(ex!=null){
                 ex.printStackTrace();
@@ -27,7 +28,7 @@ public class NewOrderProducer {
 
     private static Properties properties() {
         var properties = new Properties();
-        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
+        properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, GlobalConstants.BOOTSTRAP_SERVERS_CONFIG_VALUE);
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         return properties;
