@@ -2,6 +2,13 @@
 
 In this project, I demonstrate the basic use of kafka via command line and java application
 
+## Startup
+
+```
+cd docker
+docker-compose up
+```
+
 ## Services and ports
 
 Kafka - 9092
