@@ -11,9 +11,9 @@ docker-compose up
 
 ## Services and ports
 
-Kafka - 9092
-Kafdrop - 19000
-Zookeeper - 2181
+- Kafka - 9092
+- Kafdrop - 19000
+- Zookeeper - 2181
 
 ## How to use with cli
 
