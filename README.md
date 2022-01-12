@@ -24,7 +24,8 @@ Unzip the file and execute the commands:
 Create a new topic
 
 ```
-bin/kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic ecommerce_new_order
+bin/kafka-topics.sh --create --bootstrap-server localhost:9092 \
+ --replication-factor 1 --partitions 1 --topic ecommerce_new_order
 ```
 
 List all topics:
@@ -41,11 +42,20 @@ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic ecommerce_new
 
 Consuming messages
 ```
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ecommerce_new_order
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \ 
+--topic ecommerce_new_order
 ```
 
 Consuming messages from beginning
 
 ```
-bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic ecommerce_new_order --from-beginning
+bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 \
+ --topic ecommerce_new_order --from-beginning
+```
+
+Change partitions number of a topic:
+
+```
+bin/kafka-topics.sh --alter --bootstrap-server localhost:9092 \
+ --topic ecommerce_new_order --partitions 3
 ```
