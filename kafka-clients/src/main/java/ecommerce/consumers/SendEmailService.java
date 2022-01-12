@@ -1,12 +1,9 @@
 package ecommerce.consumers;
 
 import ecommerce.GlobalConstants;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.time.Duration;
-import java.util.Properties;
 
 import static ecommerce.GlobalConstants.consumerProperties;
 import static java.util.Collections.singletonList;

@@ -1,12 +1,9 @@
 package ecommerce.consumers;
 
 import ecommerce.GlobalConstants;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.time.Duration;
-import java.util.Properties;
 
 import static ecommerce.GlobalConstants.consumerProperties;
 import static java.util.Collections.singletonList;
@@ -35,16 +32,6 @@ public class FraudDetectorService {
             System.out.println("---------------------------------------------");
 
         }
-    }
-
-    private static Properties properties() {
-        var properties = new Properties();
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, GlobalConstants.BOOTSTRAP_SERVERS_CONFIG_VALUE);
-        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, FraudDetectorService.class.getName());
-        properties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1");
-        return properties;
     }
 
     private static void sleep(long timeToSleep) {
