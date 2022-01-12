@@ -8,20 +8,24 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class NewOrderProducer {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        var producer = new KafkaProducer<String, String>(properties());
-        var value = "123,678,987654";
-        var key = "123";
-        var orderRecord = new ProducerRecord<>(GlobalConstants.ECOMMERCE_NEW_ORDER_TOPIC, key, value);
-        producer.send(orderRecord, callback()).get();
+        for(int i =0; i<=100;i++){
+            var producer = new KafkaProducer<String, String>(properties());
+            var value = "123,678,987654";
+            var key = UUID.randomUUID().toString();
+            var orderRecord = new ProducerRecord<>(GlobalConstants.ECOMMERCE_NEW_ORDER_TOPIC, key, value);
+            producer.send(orderRecord, callback()).get();
 
-        var body = "Thank you for your order! We are processing your order!";
-        var emailRecord = new ProducerRecord<>(GlobalConstants.ECOMMERCE_SEND_EMAIL_TOPIC, "valdir@gmail.com", body);
-        producer.send(emailRecord, callback()).get();
+            var body = "valdir@gmail.com; Thank you for your order! We are processing your order!";
+            var emailRecord = new ProducerRecord<>(GlobalConstants.ECOMMERCE_SEND_EMAIL_TOPIC, UUID.randomUUID().toString(), body);
+            producer.send(emailRecord, callback()).get();
+        }
+
     }
 
     private static Callback callback() {
