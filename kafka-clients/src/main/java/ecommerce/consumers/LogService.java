@@ -1,18 +1,16 @@
 package ecommerce.consumers;
 
-import ecommerce.GlobalConstants;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.common.serialization.StringDeserializer;
 
 import java.time.Duration;
-import java.util.Properties;
 import java.util.regex.Pattern;
+
+import static ecommerce.GlobalConstants.consumerProperties;
 
 public class LogService {
 
     public static void main(String[] args) {
-        var consumer = new KafkaConsumer<String, String>(properties());
+        var consumer = new KafkaConsumer<String, String>(consumerProperties(LogService.class.getName()));
         consumer.subscribe(Pattern.compile("ecommerce.*"));
 
         while(true) poll(consumer);
@@ -32,13 +30,6 @@ public class LogService {
         }
     }
 
-    private static Properties properties() {
-        var properties = new Properties();
-        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, GlobalConstants.BOOTSTRAP_SERVERS_CONFIG_VALUE);
-        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
-        properties.put(ConsumerConfig.GROUP_ID_CONFIG, LogService.class.getName());
-        return properties;
-    }
+
 
 }
