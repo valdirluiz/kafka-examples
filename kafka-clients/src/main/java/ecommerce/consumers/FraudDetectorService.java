@@ -8,12 +8,13 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import java.time.Duration;
 import java.util.Properties;
 
+import static ecommerce.GlobalConstants.consumerProperties;
 import static java.util.Collections.singletonList;
 
 public class FraudDetectorService {
 
     public static void main(String[] args) {
-        var consumer = new KafkaConsumer<String, String>(properties());
+        var consumer = new KafkaConsumer<String, String>(consumerProperties(FraudDetectorService.class.getName()));
         consumer.subscribe(singletonList(GlobalConstants.ECOMMERCE_NEW_ORDER_TOPIC));
         while (true){
             poll(consumer);
@@ -42,6 +43,7 @@ public class FraudDetectorService {
         properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
         properties.put(ConsumerConfig.GROUP_ID_CONFIG, FraudDetectorService.class.getName());
+        properties.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, "1");
         return properties;
     }
 
