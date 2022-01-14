@@ -9,10 +9,11 @@ public class SendEmailService {
 
     public static void main(String[] args) {
         var sendEmailService = new SendEmailService();
-        var kafkaService =
+        try(var kafkaService =
                 new KafkaService(SendEmailService.class.getName(),
-                        GlobalConstants.ECOMMERCE_SEND_EMAIL_TOPIC, sendEmailService::consume);
-        kafkaService.run();
+                        GlobalConstants.ECOMMERCE_SEND_EMAIL_TOPIC, sendEmailService::consume);) {
+            kafkaService.run();
+        }
     }
 
     private void consume(ConsumerRecord<String, String> record) {

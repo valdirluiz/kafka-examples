@@ -2,17 +2,17 @@ package ecommerce.consumers;
 
 import ecommerce.GlobalConstants;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-
 import static ecommerce.GlobalConstants.sleep;
 
 public class FraudDetectorService {
 
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         var fraudDetectorService = new FraudDetectorService();
-        var kafkaService =
+        try(var kafkaService =
                 new KafkaService(FraudDetectorService.class.getName(),
-                        GlobalConstants.ECOMMERCE_NEW_ORDER_TOPIC, fraudDetectorService::consume);
-        kafkaService.run();
+                        GlobalConstants.ECOMMERCE_NEW_ORDER_TOPIC, fraudDetectorService::consume);) {
+            kafkaService.run();
+        }
 
     }
 
