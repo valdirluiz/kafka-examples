@@ -2,16 +2,18 @@ package ecommerce.producers;
 
 import ecommerce.GlobalConstants;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class NewOrderProducer {
 
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        try(var dispatcher = new KafkaDispatcher();) {
+        try(var orderDispatcher = new KafkaDispatcher<Order>();
+            var emailDispatcher = new KafkaDispatcher<String>();) {
             for (int i = 0; i <= 10; i++) {
-                sendOrder(dispatcher);
-                sendEmail(dispatcher);
+                sendOrder(orderDispatcher);
+                sendEmail(emailDispatcher);
             }
         }
 
@@ -23,9 +25,15 @@ public class NewOrderProducer {
     }
 
     private static void sendOrder(KafkaDispatcher dispatcher) throws ExecutionException, InterruptedException {
-        var value = "123,678,987654";
-        var key = UUID.randomUUID().toString();
-        dispatcher.send(GlobalConstants.ECOMMERCE_NEW_ORDER_TOPIC, key, value);
+
+
+        var userId = UUID.randomUUID().toString();
+        var orderId = UUID.randomUUID().toString();
+        var amount = new BigDecimal(Math.random() * 5000 + 1);
+
+        var order = new Order(userId, orderId, amount);
+
+        dispatcher.send(GlobalConstants.ECOMMERCE_NEW_ORDER_TOPIC, orderId, order);
     }
 
 
