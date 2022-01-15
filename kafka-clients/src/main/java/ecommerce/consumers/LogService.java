@@ -1,7 +1,10 @@
 package ecommerce.consumers;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 
 
@@ -11,7 +14,10 @@ public class LogService {
         var logService = new LogService();
         try(var kafkaService =
                     new KafkaService<>(FraudDetectorService.class.getName(),
-                            Pattern.compile("ecommerce.*"), logService::consume, String.class);) {
+                            Pattern.compile("ecommerce.*"),
+                            logService::consume, String.class,
+                            Map.of(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+                                    StringDeserializer.class.getName()));) {
             kafkaService.run();
         }
     }
