@@ -1,6 +1,7 @@
 package ecommerce.consumers;
 
 import ecommerce.GlobalConstants;
+import ecommerce.producers.Order;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import static ecommerce.GlobalConstants.sleep;
 
@@ -9,14 +10,15 @@ public class FraudDetectorService {
     public static void main(String[] args)  {
         var fraudDetectorService = new FraudDetectorService();
         try(var kafkaService =
-                new KafkaService(FraudDetectorService.class.getName(),
-                        GlobalConstants.ECOMMERCE_NEW_ORDER_TOPIC, fraudDetectorService::consume);) {
+                new KafkaService<>(FraudDetectorService.class.getName(),
+                        GlobalConstants.ECOMMERCE_NEW_ORDER_TOPIC, fraudDetectorService::consume
+                        , Order.class);) {
             kafkaService.run();
         }
 
     }
 
-    private void consume(ConsumerRecord<String, String> record) {
+    private void consume(ConsumerRecord<String, Order> record) {
         System.out.println("---------------------------------------------");
         System.out.println("Processing new order, checking for fraud. ");
         System.out.println("Order key: " + record.key());

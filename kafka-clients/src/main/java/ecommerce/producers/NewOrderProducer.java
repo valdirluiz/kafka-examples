@@ -20,7 +20,7 @@ public class NewOrderProducer {
     }
 
     private static void sendEmail(KafkaDispatcher dispatcher) throws ExecutionException, InterruptedException {
-        var body = "valdir@gmail.com; Thank you for your order! We are processing your order!";
+        var body = "Thank you for your order! We are processing your order!";
         dispatcher.send(GlobalConstants.ECOMMERCE_SEND_EMAIL_TOPIC, UUID.randomUUID().toString(), body);
     }
 

@@ -10,8 +10,8 @@ public class LogService {
     public static void main(String[] args) {
         var logService = new LogService();
         try(var kafkaService =
-                    new KafkaService(FraudDetectorService.class.getName(),
-                            Pattern.compile("ecommerce.*"), logService::consume);) {
+                    new KafkaService<>(FraudDetectorService.class.getName(),
+                            Pattern.compile("ecommerce.*"), logService::consume, String.class);) {
             kafkaService.run();
         }
     }

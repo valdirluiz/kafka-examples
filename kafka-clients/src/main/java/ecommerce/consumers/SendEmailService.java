@@ -1,6 +1,7 @@
 package ecommerce.consumers;
 
 import ecommerce.GlobalConstants;
+import ecommerce.producers.Order;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import static ecommerce.GlobalConstants.sleep;
@@ -10,8 +11,8 @@ public class SendEmailService {
     public static void main(String[] args) {
         var sendEmailService = new SendEmailService();
         try(var kafkaService =
-                new KafkaService(SendEmailService.class.getName(),
-                        GlobalConstants.ECOMMERCE_SEND_EMAIL_TOPIC, sendEmailService::consume);) {
+                new KafkaService<>(SendEmailService.class.getName(),
+                        GlobalConstants.ECOMMERCE_SEND_EMAIL_TOPIC, sendEmailService::consume, String.class);) {
             kafkaService.run();
         }
     }
