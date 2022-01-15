@@ -1,33 +1,41 @@
 package ecommerce.consumers;
 
-import ecommerce.GlobalConstants;
-import ecommerce.producers.Order;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
-import static ecommerce.GlobalConstants.sleep;
+import java.util.Map;
+import java.util.regex.Pattern;
 
-public class SendEmailService {
+
+public class LogService {
 
     public static void main(String[] args) {
-        var sendEmailService = new SendEmailService();
+        var logService = new LogService();
         try(var kafkaService =
-                new KafkaService<>(SendEmailService.class.getName(),
-                        GlobalConstants.ECOMMERCE_SEND_EMAIL_TOPIC, sendEmailService::consume, String.class);) {
+                    new KafkaService<>(LogService.class.getName(),
+                            Pattern.compile("ecommerce.*"),
+                            logService::consume, String.class,
+                            Map.of(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+                                    StringDeserializer.class.getName()));) {
             kafkaService.run();
         }
     }
 
     private void consume(ConsumerRecord<String, String> record) {
         System.out.println("---------------------------------------------");
-        System.out.println("Sending Email. ");
+        System.out.println("LOG: " + record.topic());
         System.out.println("Order key: " + record.key());
         System.out.println("Order payload: " + record.value());
         System.out.println("Order partition: " + record.partition());
         System.out.println("Order offset: " + record.offset());
-        System.out.println("Email sent...");
-        sleep(1000);
         System.out.println("---------------------------------------------");
-
     }
+
+
+
+
+
+
 
 }

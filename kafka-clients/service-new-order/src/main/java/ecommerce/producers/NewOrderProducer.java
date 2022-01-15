@@ -1,6 +1,6 @@
 package ecommerce.producers;
 
-import ecommerce.GlobalConstants;
+import ecommerce.Order;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class NewOrderProducer {
 
     private static void sendEmail(KafkaDispatcher dispatcher) throws ExecutionException, InterruptedException {
         var body = "Thank you for your order! We are processing your order!";
-        dispatcher.send(GlobalConstants.ECOMMERCE_SEND_EMAIL_TOPIC, UUID.randomUUID().toString(), body);
+        dispatcher.send("ecommerce_send_email", UUID.randomUUID().toString(), body);
     }
 
     private static void sendOrder(KafkaDispatcher dispatcher) throws ExecutionException, InterruptedException {
@@ -33,7 +33,7 @@ public class NewOrderProducer {
 
         var order = new Order(userId, orderId, amount);
 
-        dispatcher.send(GlobalConstants.ECOMMERCE_NEW_ORDER_TOPIC, orderId, order);
+        dispatcher.send("ecommerce_new_order", orderId, order);
     }
 
 
