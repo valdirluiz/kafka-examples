@@ -21,4 +21,12 @@ public class Order {
                 ", amount=" + amount +
                 '}';
     }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
 }

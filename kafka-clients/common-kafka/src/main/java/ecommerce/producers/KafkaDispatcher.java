@@ -14,12 +14,12 @@ public class KafkaDispatcher<T> implements Closeable {
 
     private final KafkaProducer<String, T> producer;
 
-    KafkaDispatcher(){
+    public KafkaDispatcher(){
        this.producer =  new KafkaProducer<>(properties());
     }
 
 
-    void send(String topicName, String key, T value) throws ExecutionException, InterruptedException {
+    public void send(String topicName, String key, T value) throws ExecutionException, InterruptedException {
         var record = new ProducerRecord<>(topicName, key, value);
         producer.send(record, callback()).get();
     }
