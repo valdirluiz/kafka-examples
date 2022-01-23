@@ -26,14 +26,13 @@ public class NewOrderProducer {
 
     private static void sendOrder(KafkaDispatcher dispatcher) throws ExecutionException, InterruptedException {
 
-
-        var userId = UUID.randomUUID().toString();
         var orderId = UUID.randomUUID().toString();
         var amount = new BigDecimal(Math.random() * 5000 + 1);
 
-        var order = new Order(userId, orderId, amount);
+        var email = Math.random() + "@email.com";
+        var order = new Order(orderId, amount, email);
 
-        dispatcher.send("ecommerce_new_order", orderId, order);
+        dispatcher.send("ecommerce_new_order", email, order);
     }
 
 
